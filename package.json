@@ -1,0 +1,26 @@
+```json
+{
+  "name": "marketing-swiss-army-knife",
+  "version": "1.0.0",
+  "description": "Complete Digital Marketing Automation Platform with Real Data",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'Build complete'",
+    "start": "vercel dev"
+  },
+  "dependencies": {
+    "axios": "^1.6.0"
+  },
+  "keywords": [
+    "marketing",
+    "affiliate",
+    "dropshipping",
+    "automation",
+    "serp",
+    "real-data"
+  ],
+  "author": "Marketing Tool Developer",
+  "license": "MIT"
+}
+```
