@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>End to End Manager - Real Data Marketing</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <h1><i class="fas fa-tools"></i> End to End Manager</h1>
+            <p>Real-Time Product Research & Marketing Automation</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            
+            <!-- Step 1: Niche Input -->
+            <section class="step-section active" id="step-1">
+                <div class="step-header">
+                    <span class="step-number">1</span>
+                    <h2>What's Your Niche?</h2>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="niche-input" placeholder="Enter your niche (e.g., wireless earbuds, yoga mats, coffee makers)" class="main-input">
+                    <button onclick="goToStep2()" class="btn-primary">
+                        <i class="fas fa-arrow-right"></i> Continue
+                    </button>
+                </div>
+                <div class="niche-examples">
+                    <p><strong>Popular niches:</strong></p>
+                    <div class="example-tags">
+                        <span onclick="fillNiche('fitness equipment')">Fitness Equipment</span>
+                        <span onclick="fillNiche('kitchen gadgets')">Kitchen Gadgets</span>
+                        <span onclick="fillNiche('phone accessories')">Phone Accessories</span>
+                        <span onclick="fillNiche('home decor')">Home Decor</span>
+                        <span onclick="fillNiche('pet supplies')">Pet Supplies</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 2: Business Type Selection -->
+            <section class="step-section" id="step-2">
+                <div class="step-header">
+                    <span class="step-number">2</span>
+                    <h2>Choose Your Business Model</h2>
+                </div>
+                <div class="business-options">
+                    <div class="business-card" onclick="selectBusinessType('affiliate')">
+                        <i class="fas fa-handshake"></i>
+                        <h3>Affiliate Marketing</h3>
+                        <p>Find real products from Amazon, Google Shopping & major retailers with live pricing</p>
+                        <ul>
+                            <li>✓ Real Amazon products</li>
+                            <li>✓ Live commission data</li>
+                            <li>✓ Current market prices</li>
+                        </ul>
+                    </div>
+                    <div class="business-card" onclick="selectBusinessType('dropshipping')">
+                        <i class="fas fa-shipping-fast"></i>
+                        <h3>Dropshipping</h3>
+                        <p>Discover trending products with real supplier data and profit calculations</p>
+                        <ul>
+                            <li>✓ Live product trends</li>
+                            <li>✓ Real supplier info</li>
+                            <li>✓ Profit margin analysis</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 3: Results Display -->
+            <section class="step-section" id="step-3">
+                <div class="step-header">
+                    <span class="step-number">3</span>
+                    <h2 id="results-title">Real Products Found</h2>
+                </div>
+                
+                <div class="loading" id="loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p id="loading-text">Searching real products in your niche...</p>
+                </div>
+
+                <div class="stats-grid" id="stats-grid" style="display: none;">
+                    <div class="stat-card">
+                        <div class="number" id="total-found">0</div>
+                        <div class="label">Products Found</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number" id="avg-price">$0</div>
+                        <div class="label">Average Price</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number" id="high-rated">0</div>
+                        <div class="label">High Rated (4.5+)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number" id="in-stock">0</div>
+                        <div class="label">In Stock</div>
+                    </div>
+                </div>
+
+                <div class="search-controls" id="search-controls" style="display: none;">
+                    <select class="filter-select" id="sort-filter" onchange="sortResults()">
+                        <option value="relevance">Sort by Relevance</option>
+                        <option value="price_low">Price: Low to High</option>
+                        <option value="price_high">Price: High to Low</option>
+                        <option value="rating">Highest Rated</option>
+                        <option value="reviews">Most Reviews</option>
+                    </select>
+                    <select class="filter-select" id="source-filter" onchange="filterBySource()">
+                        <option value="all">All Sources</option>
+                        <option value="amazon">Amazon</option>
+                        <option value="shopping">Google Shopping</option>
+                        <option value="ebay">eBay</option>
+                    </select>
+                    <button class="btn-info" onclick="refreshResults()">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+
+                <div class="results-container" id="results-container">
+                    <!-- Real products will be populated here -->
+                </div>
+
+                <div class="selection-info">
+                    <p><i class="fas fa-info-circle"></i> Select up to 5 products for detailed analysis</p>
+                    <button onclick="proceedToAnalysis()" class="btn-primary" id="proceed-btn" disabled>
+                        Analyze Selected Products <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Step 4: Product Analysis -->
+            <section class="step-section" id="step-4">
+                <div class="step-header">
+                    <span class="step-number">4</span>
+                    <h2>Real Market Analysis</h2>
+                </div>
+                
+                <div class="analysis-container" id="analysis-container">
+                    <!-- Analysis results will appear here -->
+                </div>
+
+                <div class="analysis-options">
+                    <button onclick="generateCompleteCampaign()" class="btn-success">
+                        <i class="fas fa-rocket"></i> Generate Complete Campaign
+                    </button>
+                    <button onclick="showCompetitorAnalysis()" class="btn-info">
+                        <i class="fas fa-chart-line"></i> Competitor Analysis
+                    </button>
+                </div>
+            </section>
+
+            <!-- Step 5: Complete Marketing Campaign -->
+            <section class="step-section" id="step-5">
+                <div class="step-header">
+                    <span class="step-number">5</span>
+                    <h2>Complete AI-Generated Marketing Campaign</h2>
+                </div>
+                
+                <div class="campaign-container" id="campaign-container">
+                    <!-- Campaign content will appear here -->
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 End to End Manager - Powered by Real Data & AI</p>
+        </div>
+    </footer>
+
+    <!-- Copy notification -->
+    <div class="copy-notification" id="copy-notification">
+        <i class="fas fa-check"></i> Copied to clipboard!
+    </div>
+
+    <script src="script.js"></script>
+</body>
+  </html>
