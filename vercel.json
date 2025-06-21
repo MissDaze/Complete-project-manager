@@ -1,15 +1,23 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "api/**/*.js",
-      "use": "@vercel/node"
+  "functions": {
+    "api/affiliate-search.js": {
+      "runtime": "@vercel/node@18.x"
+    },
+    "api/dropship-search.js": {
+      "runtime": "@vercel/node@18.x"
+    },
+    "api/keyword-research.js": {
+      "runtime": "@vercel/node@18.x"
+    },
+    "api/competitor-analysis.js": {
+      "runtime": "@vercel/node@18.x"
+    },
+    "api/content-generation.js": {
+      "runtime": "@vercel/node@18.x"
+    },
+    "api/marketing-calendar.js": {
+      "runtime": "@vercel/node@18.x"
     }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    }
-  ]
+  }
 }
