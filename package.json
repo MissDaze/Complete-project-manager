@@ -4,22 +4,20 @@
   "description": "Complete Digital Marketing Automation Platform with Real Data",
   "main": "index.js",
   "scripts": {
-    "dev": "vercel dev",
-    "build": "echo 'Build complete'",
-    "start": "vercel dev"
+    "dev": "node --version",
+    "build": "echo 'Static site build complete'",
+    "start": "node --version"
   },
-  "dependencies": {
-    "axios": "^1.6.0"
+  "dependencies": {},
+  "engines": {
+    "node": "18.x"
   },
   "keywords": [
     "marketing",
     "affiliate",
     "dropshipping",
-    "automation",
-    "serp",
-    "real-data",
-    "end-to-end"
+    "automation"
   ],
-  "author": "End to End Manager Developer",
+  "author": "End to End Manager",
   "license": "MIT"
 }
