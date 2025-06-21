@@ -1,43 +1,66 @@
-export default async function handler(req, res) {
+module.exports = async (req, res) => {
+    // Set CORS headers
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    
+    if (req.method === 'OPTIONS') {
+        res.status(200).end();
+        return;
+    }
+    
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
     const { niche, keywords } = req.body;
-    const serpApiKey = 'ba7c0cea122b912337854c445cb98713564f0d71f2b1eb20f252ed215558a6a7';
+    const serpApiKey = process.env.SERPAPI_KEY || 'ba7c0cea122b912337854c445cb98713564f0d71f2b1eb20f252ed215558a6a7';
 
     if (!niche) {
         return res.status(400).json({ error: 'Niche is required' });
     }
 
     try {
+        const fetch = (await import('node-fetch')).default;
+        
         // Analyze top competitors for main keywords
         const competitorAnalysis = [];
         const keywordsToAnalyze = keywords || [`best ${niche}`, `${niche} review`, `top ${niche}`];
 
         for (const keyword of keywordsToAnalyze.slice(0, 3)) {
             try {
-                const response = await fetch(`https://serpapi.com/search?engine=google&q=${encodeURIComponent(keyword)}&api_key=${serpApiKey}`);
+                const searchUrl = `https://serpapi.com/search?engine=google&q=${encodeURIComponent(keyword)}&api_key=${serpApiKey}`;
+                const response = await fetch(searchUrl);
+                
+                if (!response.ok) {
+                    throw new Error(`Search API error: ${response.status}`);
+                }
+                
                 const data = await response.json();
 
-                if (data.organic_results) {
+                if (data.organic_results && Array.isArray(data.organic_results)) {
                     data.organic_results.slice(0, 5).forEach((result, index) => {
                         if (result.link && result.title) {
-                            const domain = new URL(result.link).hostname.replace('www.', '');
-                            
-                            competitorAnalysis.push({
-                                domain: domain,
-                                title: result.title,
-                                position: index + 1,
-                                keyword: keyword,
-                                snippet: result.snippet,
-                                link: result.link
-                            });
+                            try {
+                                const url = new URL(result.link);
+                                const domain = url.hostname.replace('www.', '');
+                                
+                                competitorAnalysis.push({
+                                    domain: domain,
+                                    title: result.title,
+                                    position: index + 1,
+                                    keyword: keyword,
+                                    snippet: result.snippet || '',
+                                    link: result.link
+                                });
+                            } catch (urlError) {
+                                console.error('Invalid URL:', result.link);
+                            }
                         }
                     });
                 }
 
-                await new Promise(resolve => setTimeout(resolve, 200));
+                await new Promise(resolve => setTimeout(resolve, 300));
             } catch (error) {
                 console.error(`Error analyzing keyword ${keyword}:`, error);
             }
@@ -81,7 +104,7 @@ export default async function handler(req, res) {
             summary: {
                 totalCompetitors: competitors.length,
                 strongCompetitors: competitors.filter(c => c.strength > 70).length,
-                averageStrength: competitors.reduce((sum, c) => sum + c.strength, 0) / competitors.length,
+                averageStrength: competitors.length > 0 ? competitors.reduce((sum, c) => sum + c.strength, 0) / competitors.length : 0,
                 topDomains: competitors.slice(0, 3).map(c => c.domain)
             }
         });
@@ -93,4 +116,4 @@ export default async function handler(req, res) {
             details: error.message
         });
     }
-}
+};
