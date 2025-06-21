@@ -1,6 +1,5 @@
-```json
 {
-  "name": "marketing-swiss-army-knife",
+  "name": "end-to-end-manager",
   "version": "1.0.0",
   "description": "Complete Digital Marketing Automation Platform with Real Data",
   "main": "index.js",
@@ -18,9 +17,9 @@
     "dropshipping",
     "automation",
     "serp",
-    "real-data"
+    "real-data",
+    "end-to-end"
   ],
-  "author": "Marketing Tool Developer",
+  "author": "End to End Manager Developer",
   "license": "MIT"
 }
-```
